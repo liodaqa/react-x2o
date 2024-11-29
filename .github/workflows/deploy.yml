@@ -1,46 +1,35 @@
-name: Deploy React App to GitHub Pages
-
-on:
-  push:
-    branches:
-      - master
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the repository
+      # Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      # Step 2: Set up Node.js environment
+      # Set up Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: "20"
 
-      # Step 3: Install dependencies
+      # Install dependencies
       - name: Install dependencies
         run: npm install
 
-      # Step 4: Build the React app
+      # Build the React app
       - name: Build React app
         run: npm run build
 
-      # Step 5: Set up SSH for deployment
-      - name: Set up SSH
+      # Setup SSH for deployment
+      - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan github.com >> ~/.ssh/known_hosts
 
-      # Step 6: Test SSH authentication
-      - name: Test SSH authentication
-        run: ssh -T git@github.com
-
-      # Step 7: Deploy to GitHub Pages
+      # Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         run: |
           git config user.name "${{ github.actor }}"
