@@ -13,6 +13,7 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@v2
 
+      # Set up Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
@@ -24,20 +25,17 @@ jobs:
       - name: Build the app
         run: npm run build
 
-      # Debug step to verify the token value
-      - name: Debug Token
+      # Set up SSH for deployment
+      - name: Setup SSH
         run: |
-          echo "Token is set: ${{ secrets.REACT_DEPLOY_TOKEN }}"
+          mkdir -p ~/.ssh
+          echo "${{ secrets.test }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
 
-      # Debug step to verify the constructed repo URL
-      - name: Debug Repo URL
-        run: |
-          echo "Repository URL: https://x-access-token:${{ secrets.REACT_DEPLOY_TOKEN }}@github.com/${{ github.repository }}.git"
-
+      # Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
-        env:
-          REACT_DEPLOY_TOKEN: ${{ secrets.REACT_DEPLOY_TOKEN }}
         run: |
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor }}@users.noreply.github.com"
-          npx gh-pages -d build --repo=https://x-access-token:${REACT_DEPLOY_TOKEN}@github.com/${{ github.repository }}.git
+          npx gh-pages -d build --repo=git@github.com:${{ github.repository }}.git
