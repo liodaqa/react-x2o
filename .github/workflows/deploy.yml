@@ -36,6 +36,6 @@ jobs:
           npm run deploy
         env:
           CI: false
-          REACT_DEPLOY_TOKEN: ${{ secrets.REACT_DEPLOY_TOKEN }} # Ensure token is set here
+          REACT_DEPLOY_TOKEN: ${{ secrets.REACT_DEPLOY_TOKEN }} # Use the secret for deployment
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_REPOSITORY: ${{ github.repository }}
