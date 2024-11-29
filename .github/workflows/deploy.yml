@@ -31,6 +31,6 @@ jobs:
           npm run deploy
         env:
           CI: false
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REACT_DEPLOY_TOKEN: ${{ secrets.REACT_DEPLOY_TOKEN }}
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_REPOSITORY: ${{ github.repository }}
