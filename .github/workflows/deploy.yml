@@ -24,14 +24,10 @@ jobs:
       - name: Build the app
         run: npm run build
 
-      - name: Set Git config
-        run: |
-          git config --global user.email "liodaqa@gmail.com"
-          git config --global user.name "${{ github.actor }}"
-
       - name: Deploy to GitHub Pages
-        run: npm run deploy
         env:
-          CI: false
           REACT_DEPLOY_TOKEN: ${{ secrets.REACT_DEPLOY_TOKEN }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
+          npx gh-pages -d build --repo=https://x-access-token:${REACT_DEPLOY_TOKEN}@github.com/${{ github.repository }}.git
