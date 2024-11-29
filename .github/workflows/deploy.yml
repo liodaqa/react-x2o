@@ -16,7 +16,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20'
+          node-version: "20"
 
       - name: Install dependencies
         run: npm install
@@ -24,11 +24,15 @@ jobs:
       - name: Build the app
         run: npm run build
 
+      # Debug step to verify the token value
       - name: Debug Token
-        run: echo "Token: ${{ secrets.REACT_DEPLOY_TOKEN }}" || exit 1
+        run: |
+          echo "Token is set: ${{ secrets.REACT_DEPLOY_TOKEN }}"
 
+      # Debug step to verify the constructed repo URL
       - name: Debug Repo URL
-        run: echo "Repository URL: https://x-access-token:${{ secrets.REACT_DEPLOY_TOKEN }}@github.com/${{ github.repository }}.git" || exit 1
+        run: |
+          echo "Repository URL: https://x-access-token:${{ secrets.REACT_DEPLOY_TOKEN }}@github.com/${{ github.repository }}.git"
 
       - name: Deploy to GitHub Pages
         env:
