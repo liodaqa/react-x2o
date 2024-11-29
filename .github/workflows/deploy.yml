@@ -29,13 +29,13 @@ jobs:
       - name: Set Git config
         run: |
           git config --global user.email "liodaqa@gmail.com"
-          git config --global user.name "liodaqa"
+          git config --global user.name "${{ github.actor }}"
 
       - name: Deploy to GitHub Pages
         run: |
           npm run deploy
         env:
           CI: false
-          GITHUB_TOKEN: ${{ secrets.REACT_DEPLOY_TOKEN }} # Use the secret token created
+          REACT_DEPLOY_TOKEN: ${{ secrets.REACT_DEPLOY_TOKEN }}
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_REPOSITORY: ${{ github.repository }}
