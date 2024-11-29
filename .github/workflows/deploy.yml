@@ -26,6 +26,11 @@ jobs:
         run: |
           npm run build
 
+      - name: Set Git config
+        run: |
+          git config --global user.email "liodaqa@gmail.com"
+          git config --global user.name "liodaqa"
+
       - name: Deploy to GitHub Pages
         run: |
           npm run deploy
