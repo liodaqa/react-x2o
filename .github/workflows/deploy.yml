@@ -10,29 +10,35 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout the repository
-      - name: Checkout the repository
+      # Step 1: Checkout the repository
+      - name: Checkout repository
         uses: actions/checkout@v2
 
-      # Set up Node.js
+      # Step 2: Set up Node.js environment
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: "20"
 
-      # Install dependencies
+      # Step 3: Install dependencies
       - name: Install dependencies
         run: npm install
 
-      # Build the app
-      - name: Build the app
+      # Step 4: Build the React app
+      - name: Build React app
         run: npm run build
 
-      # Deploy to GitHub Pages
+      # Step 5: Set up SSH for deployment
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+      # Step 6: Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
-        env:
-          REACT_DEPLOY_TOKEN: ${{ secrets.REACT_DEPLOY_TOKEN }}
         run: |
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor }}@users.noreply.github.com"
-          npx gh-pages -d build --repo=https://x-access-token:${REACT_DEPLOY_TOKEN}@github.com/${{ github.repository }}.git
+          npx gh-pages -d build --repo=git@github.com:liodaqa/react-x2o.git
