@@ -1,35 +1,42 @@
+name: Deploy React App
+
+on:
+  push:
+    branches:
+      - master # Trigger this workflow on pushes to the master branch
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout the repository
+      # Step 1: Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      # Set up Node.js
+      # Step 2: Set up Node.js environment
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: "20"
 
-      # Install dependencies
+      # Step 3: Install dependencies
       - name: Install dependencies
         run: npm install
 
-      # Build the React app
+      # Step 4: Build the React app
       - name: Build React app
         run: npm run build
 
-      # Setup SSH for deployment
-      - name: Setup SSH
+      # Step 5: Set up SSH for deployment
+      - name: Set up SSH
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan github.com >> ~/.ssh/known_hosts
 
-      # Deploy to GitHub Pages
+      # Step 6: Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         run: |
           git config user.name "${{ github.actor }}"
