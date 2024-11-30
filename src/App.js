@@ -3,7 +3,7 @@ import "./App.css"
 function App() {
   return (
     <div className="App">
-      GitHub Pages <h1>HAMZA DAQA OMAR </h1>
+      GitHub Pages <h1>HAMZA DAQA OMAR dj</h1>
     </div>
   )
 }
